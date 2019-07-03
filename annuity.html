@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Annuity App
+        </title>
+        <link href="https://fonts.googleapis.com/css?family=Monofett&display=swap" rel="stylesheet">
+        <style>
+            body
+            {
+                margin:0;
+                padding:0;
+            }
+            header
+            {   
+
+                height:200px;
+                background-color:#108750;
+                text-align:center;
+                border-top:black 10px Solid;
+                border-bottom:black 5px solid;
+            }
+            h2
+            {
+                font-family: 'Monofett', cursive;
+                font-size:40pt;
+                padding-top:55px;
+            }
+            #input
+            {
+                width:235px;
+                margin:5px auto;
+                margin-top:25px;
+
+            }
+            input
+            {
+                font-size:14pt;
+                width:198px;
+                padding:0;
+                margin:1px 2px;
+                text-align:center;
+                border-radius:5px;
+                border-width: 1px;
+            }
+            button
+            {
+                font-size:12pt;
+                padding:5px 0px;
+                width:200px;
+                border-radius:5px;
+                background-color:#23c479;
+            }
+            h3
+            {
+                margin-left:20%;
+            }
+            table {
+            font-family: arial, sans-serif;
+            /* border-collapse: collapse; */
+            width: 50%;
+            margin: 10px auto;
+            }
+                
+            td, th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+            }
+                
+            tr:nth-child(even) {
+            background-color: #dddddd;
+            }
+
+            td
+            {
+                text-align:center;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h2>Annuity Payment Calculator</h2>
+        </header>
+        <div id="input">
+            <form>
+                <input id="principle" placeholder="Principle" name="principle">$</input>
+                <input id="interest_rate" placeholder="Interest Rate" name="interest_rate">%</input>
+                <input id="years" placeholder="Years" name="years">Yrs</input>
+            </form>
+            <button type="submit" onclick="createPaymentTable()">Calculate Payments</button>
+        </div>
+        
+
+        <h3 id="payments"></h3>
+
+        <table id="table_data"></table>
+        
+        <script>
+            function createPaymentTable()
+            {
+
+                var principle       = document.getElementById("principle").value;
+                var interest_rate   = document.getElementById("interest_rate").value/100;
+                var years           = document.getElementById("years").value;
+
+                //Validation
+                var text = 0;
+                if(!numValidation(principle,1,5000000000))
+                {
+                    text="Please Enter Valid Principle";
+                }
+                if(!numValidation(interest_rate,0,1))
+                {
+                    text="Please Enter Valid Interest Rate";
+                    
+                }
+                if(!numValidation(years,1,100))
+                {
+                    text="Please Enter Valid Year";
+                }
+
+                if(text != 0)
+                {
+                    alert(text);
+                }                
+
+                var months                  = years*12;
+                var monthly_interest_rate   = interest_rate/12;
+                var present_value           = 1/(1+interest_rate); 
+                var monthly_present_value   = 1/(1+monthly_interest_rate);
+
+                var payment = principle / ( (1-Math.pow(monthly_present_value,months) ) /monthly_interest_rate );
+
+                var present_value_i;
+                var principle_payment_portion;
+                var interest_payment_portion;
+                var js_table_data ="<tr><th>Payment #</th><th>Interest Portion</th><th>Principle Portion</th></tr>";
+
+                for(var i=1;i<months+1;i++)
+                {
+                    present_value_i             = 1/(1+((interest_rate)*i) );
+                    interest_payment_portion    = payment*present_value_i;
+                    principle_payment_portion   = payment-interest_payment_portion;
+
+                    js_table_data+="<tr><td>"+i+"</td><td>"+interest_payment_portion.toFixed(2)+"</td><td>"+principle_payment_portion.toFixed(2)+"</td></tr>";
+                    //console.log("("+i+")"+"i: "+interest_payment_portion.toFixed(2)+" p: "+principle_payment_portion.toFixed(2));
+                    //console.log("Present Value("+i+"): "+present_value_i);
+                }
+                document.getElementById("payments").innerHTML ="Payments: "+ payment.toFixed(2);
+                document.getElementById("table_data").innerHTML = js_table_data;
+                //console.log("Payment: "+payment.toFixed(2));
+                //console.log("Present Value: "+present_value);
+            }
+            
+            function numValidation(input_value,minVal,maxVal)
+            {
+                var text,flag;
+                if (isNaN(input_value) || input_value < minVal || input_value > maxVal) 
+                {
+                    flag =false;
+                } else 
+                {
+                    flag =true;
+                }
+                return flag;
+            }
+
+        </script>
+    </body>
+
+</html>
