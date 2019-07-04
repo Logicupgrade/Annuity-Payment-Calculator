@@ -22,9 +22,17 @@
             }
             h2
             {
+<<<<<<< HEAD
                 font-family: 'Monofett', cursive;
                 font-size:40pt;
                 padding-top:55px;
+=======
+                color:#eaf754;
+                text-shadow: black 3px 3px;
+                font-family: 'Monofett', cursive;
+                font-size:50pt;
+                padding-top:25px;
+>>>>>>> updated algorithm and display
             }
             #input
             {
@@ -135,6 +143,7 @@
                 var present_value_i;
                 var principle_payment_portion;
                 var interest_payment_portion;
+<<<<<<< HEAD
                 var js_table_data ="<tr><th>Payment #</th><th>Interest Portion</th><th>Principle Portion</th></tr>";
 
                 for(var i=1;i<months+1;i++)
@@ -146,6 +155,31 @@
                     js_table_data+="<tr><td>"+i+"</td><td>"+interest_payment_portion.toFixed(2)+"</td><td>"+principle_payment_portion.toFixed(2)+"</td></tr>";
                     //console.log("("+i+")"+"i: "+interest_payment_portion.toFixed(2)+" p: "+principle_payment_portion.toFixed(2));
                     //console.log("Present Value("+i+"): "+present_value_i);
+=======
+                var js_table_data ="<tr><th>Payment #</th><th>Interest Portion</th><th>Principle Portion</th><th>Declining Principle</th></tr>";
+
+                var temp_principle;
+
+
+                js_table_data +="<tr><td>"+0+"</td><td>"+0+"</td><td>"+0+"</td><td>"+ Number(principle).toFixed(2) +"</td></tr>";
+
+                for(var i=1;i<months+1;i++)
+                {
+                    present_value_i             = 1/(1+((monthly_interest_rate)*i) );
+                    interest_payment_portion    = principle*monthly_interest_rate;//payment*present_value_i;
+                    principle_payment_portion   = payment-interest_payment_portion;
+
+                    principle = principle-principle_payment_portion;
+
+                    temp_principle = Number(principle);
+
+                    js_table_data+="<tr><td>"+i+"</td><td>"+interest_payment_portion.toFixed(2)+"</td><td>"+principle_payment_portion.toFixed(2)+"</td><td>"+ temp_principle.toFixed(2) +"</td></tr>";
+                    //console.log("("+i+")"+"i: "+interest_payment_portion.toFixed(2)+" p: "+principle_payment_portion.toFixed(2));
+                    //console.log("Present Value("+i+"): "+present_value_i);
+                    
+
+                    
+>>>>>>> updated algorithm and display
                 }
                 document.getElementById("payments").innerHTML ="Payments: "+ payment.toFixed(2);
                 document.getElementById("table_data").innerHTML = js_table_data;
